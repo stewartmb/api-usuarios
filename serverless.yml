@@ -20,37 +20,81 @@ functions:
     handler: crear_usuario.lambda_handler
     events:
       - http:
-          path: usuarios/crear
+          path: /usuarios/crear
           method: post
           cors: true
-          integration: lambda-proxy  # Habilitar integración de proxy Lambda
+          integration: lambda
+          request:
+            template:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.resourcePath",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.json('$')
+                }
 
   loginUsuario:
     handler: login_usuario.lambda_handler
     events:
       - http:
-          path: usuarios/login
+          path: /usuarios/login
           method: post
           cors: true
-          integration: lambda-proxy
+          integration: lambda
+          request:
+            template:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.resourcePath",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.json('$')
+                }
 
   eliminarUsuario:
     handler: eliminar_usuario.lambda_handler
     events:
       - http:
-          path: usuarios/eliminar
+          path: /usuarios/eliminar
           method: delete
           cors: true
-          integration: lambda-proxy
+          integration: lambda
+          request:
+            template:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.resourcePath",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.json('$')
+                }
 
   obtenerPerfil:
     handler: obtener_perfil.lambda_handler
     events:
       - http:
-          path: usuarios/obtener
+          path: /usuarios/obtener
           method: get
           cors: true
-          integration: lambda-proxy
+          integration: lambda
+          request:
+            template:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.resourcePath",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.json('$')
+                }
 
 resources:
   Resources:
