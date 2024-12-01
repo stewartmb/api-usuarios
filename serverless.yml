@@ -17,7 +17,7 @@ package:
 
 functions:
   crearUsuario:
-    handler: lambdas/crear_usuario.lambda_handler
+    handler: crear_usuario.lambda_handler
     events:
       - http:
           path: usuarios/crear
@@ -26,7 +26,7 @@ functions:
           integration: lambda-proxy  # Habilitar integración de proxy Lambda
 
   loginUsuario:
-    handler: lambdas/login_usuario.lambda_handler
+    handler: login_usuario.lambda_handler
     events:
       - http:
           path: usuarios/login
@@ -35,7 +35,7 @@ functions:
           integration: lambda-proxy
 
   eliminarUsuario:
-    handler: lambdas/eliminar_usuario.lambda_handler
+    handler: eliminar_usuario.lambda_handler
     events:
       - http:
           path: usuarios/eliminar
@@ -44,7 +44,7 @@ functions:
           integration: lambda-proxy
 
   obtenerPerfil:
-    handler: lambdas/obtener_perfil.lambda_handler
+    handler: obtener_perfil.lambda_handler
     events:
       - http:
           path: usuarios/obtener
