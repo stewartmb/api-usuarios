@@ -25,7 +25,7 @@ functions:
           cors: true
           integration: lambda
           request:
-            templates:
+            template:
               application/json: |
                 {
                   "method": "$context.httpMethod",
@@ -45,7 +45,7 @@ functions:
           cors: true
           integration: lambda
           request:
-            templates:
+            template:
               application/json: |
                 {
                   "method": "$context.httpMethod",
@@ -65,7 +65,7 @@ functions:
           cors: true
           integration: lambda
           request:
-            templates:
+            template:
               application/json: |
                 {
                   "method": "$context.httpMethod",
@@ -85,7 +85,7 @@ functions:
           cors: true
           integration: lambda
           request:
-            templates:
+            template:
               application/json: |
                 {
                   "method": "$context.httpMethod",
