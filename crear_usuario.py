@@ -18,21 +18,26 @@ def validate_date(date_str):
 def lambda_handler(event, context):
     try:
         # Extraer los datos del evento
-        tenant_id = event.get('tenant_id')
-        user_id = event.get('user_id')
-        password = event.get('password')
-        role = event.get('role')
-        specialty = event.get('specialty')
-        email = event.get('email')
-        gender = event.get('gender')  # Nuevo atributo
-        fecha_nacimiento = event.get('fecha_nacimiento')  # Nuevo atributo
-        first_name = event.get('first_name')  # Nuevo atributo
-        last_name = event.get('last_name')  # Nuevo atributo
+        body = json.loads(event.get('body', '{}'))  # Deserializa el cuerpo de la solicitud
+        tenant_id = body.get('tenant_id')
+        user_id = body.get('user_id')
+        password = body.get('password')
+        role = body.get('role')
+        specialty = body.get('specialty')
+        email = body.get('email')
+        gender = body.get('gender')
+        fecha_nacimiento = body.get('fecha_nacimiento')
+        first_name = body.get('first_name')
+        last_name = body.get('last_name')
 
         # Validar que los campos requeridos estén presentes
         if not tenant_id or not user_id or not password or not role or not specialty or not email or not gender or not fecha_nacimiento or not first_name or not last_name:
             return {
                 'statusCode': 400,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
                 'body': json.dumps({
                     'error': 'Faltan tenant_id, user_id, password, role, specialty, email, gender, fecha_nacimiento, first_name o last_name.'
                 })
@@ -42,6 +47,10 @@ def lambda_handler(event, context):
         if not validate_date(fecha_nacimiento):
             return {
                 'statusCode': 400,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
                 'body': json.dumps({
                     'error': 'El formato de fecha_nacimiento debe ser YYYY-MM-DD.'
                 })
@@ -56,13 +65,13 @@ def lambda_handler(event, context):
 
         # Crear el objeto del usuario con las claves primarias y atributos adicionales
         user_item = {
-            'tenant_id#user_id': f"{tenant_id}#{user_id}",  # Clave de partición
-            'role': role,  # Clave de ordenamiento
+            'tenant_id#user_id': f"{tenant_id}#{user_id}",
+            'role': role,
             'password': hashed_password,
             'specialty': specialty,
             'email': email,
             'gender': gender,
-            'fecha_nacimiento': fecha_nacimiento,  # Almacenar fecha_nacimiento
+            'fecha_nacimiento': fecha_nacimiento,
             'first_name': first_name,
             'last_name': last_name
         }
@@ -72,16 +81,24 @@ def lambda_handler(event, context):
 
         return {
             'statusCode': 200,
-            'body': {
+            'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            'body': json.dumps({
                 'message': 'Usuario registrado exitosamente',
                 'user_id': user_id
-            }
+            })
         }
     except Exception as e:
         # Manejo de errores
         return {
             'statusCode': 500,
-            'body': {
+            'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            'body': json.dumps({
                 'error': str(e)
-            }
+            })
         }
