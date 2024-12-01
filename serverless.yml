@@ -1,49 +1,55 @@
-org: stewartmaquera
 service: api-usuarios
 
 provider:
   name: aws
   runtime: python3.12
   memorySize: 1024
-  timeout: 30
+  timeout: 29
   iam:
     role: arn:aws:iam::630606600000:role/LabRole
   environment:
     TABLE_NAME: ${sls:stage}-t_usuarios
     TOKENS_TABLE: ${sls:stage}-t_tokens_acceso
 
+package:
+  individually: true  # Empaquetar cada Lambda individualmente
+
 functions:
   crearUsuario:
-    handler: lambdas/crear_usuario.lambda_handler
+    handler: crear_usuario.lambda_handler
     events:
       - http:
-          path: usuarios/crear
+          path: /usuarios/crear
           method: post
           cors: true
+          integration: lambda  # Especifica la integración Lambda
 
   loginUsuario:
-    handler: lambdas/login_usuario.lambda_handler
+    handler: login_usuario.lambda_handler
     events:
       - http:
-          path: usuarios/login
+          path: /usuarios/login
           method: post
           cors: true
+          integration: lambda
 
   eliminarUsuario:
-    handler: lambdas/eliminar_usuario.lambda_handler
+    handler: eliminar_usuario.lambda_handler
     events:
       - http:
-          path: usuarios/eliminar
+          path: /usuarios/eliminar
           method: delete
           cors: true
+          integration: lambda
 
   obtenerPerfil:
-    handler: lambdas/obtener_perfil.lambda_handler
+    handler: obtener_perfil.lambda_handler
     events:
       - http:
-          path: usuarios/obtener
+          path: /usuarios/obtener
           method: get
           cors: true
+          integration: lambda
 
 resources:
   Resources:
