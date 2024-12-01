@@ -17,84 +17,40 @@ package:
 
 functions:
   crearUsuario:
-    handler: crear_usuario.lambda_handler
+    handler: lambdas/crear_usuario.lambda_handler
     events:
       - http:
-          path: /usuarios/crear
+          path: usuarios/crear
           method: post
           cors: true
-          integration: lambda
-          request:
-            template:
-              application/json: |
-                {
-                  "method": "$context.httpMethod",
-                  "path": "$context.resourcePath",
-                  "headers": {
-                    "Authorization": "$input.params('Authorization')"
-                  },
-                  "body": $input.json('$')
-                }
+          integration: lambda-proxy  # Habilitar integración de proxy Lambda
 
   loginUsuario:
-    handler: login_usuario.lambda_handler
+    handler: lambdas/login_usuario.lambda_handler
     events:
       - http:
-          path: /usuarios/login
+          path: usuarios/login
           method: post
           cors: true
-          integration: lambda
-          request:
-            template:
-              application/json: |
-                {
-                  "method": "$context.httpMethod",
-                  "path": "$context.resourcePath",
-                  "headers": {
-                    "Authorization": "$input.params('Authorization')"
-                  },
-                  "body": $input.json('$')
-                }
+          integration: lambda-proxy
 
   eliminarUsuario:
-    handler: eliminar_usuario.lambda_handler
+    handler: lambdas/eliminar_usuario.lambda_handler
     events:
       - http:
-          path: /usuarios/eliminar
+          path: usuarios/eliminar
           method: delete
           cors: true
-          integration: lambda
-          request:
-            template:
-              application/json: |
-                {
-                  "method": "$context.httpMethod",
-                  "path": "$context.resourcePath",
-                  "headers": {
-                    "Authorization": "$input.params('Authorization')"
-                  },
-                  "body": $input.json('$')
-                }
+          integration: lambda-proxy
 
   obtenerPerfil:
-    handler: obtener_perfil.lambda_handler
+    handler: lambdas/obtener_perfil.lambda_handler
     events:
       - http:
-          path: /usuarios/obtener
+          path: usuarios/obtener
           method: get
           cors: true
-          integration: lambda
-          request:
-            template:
-              application/json: |
-                {
-                  "method": "$context.httpMethod",
-                  "path": "$context.resourcePath",
-                  "headers": {
-                    "Authorization": "$input.params('Authorization')"
-                  },
-                  "body": $input.json('$')
-                }
+          integration: lambda-proxy
 
 resources:
   Resources:
