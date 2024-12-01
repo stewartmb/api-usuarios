@@ -23,7 +23,18 @@ functions:
           path: /usuarios/crear
           method: post
           cors: true
-          integration: lambda  # Especifica la integración Lambda
+          integration: lambda
+          request:
+            templates:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.resourcePath",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.json('$')
+                }
 
   loginUsuario:
     handler: login_usuario.lambda_handler
@@ -33,6 +44,17 @@ functions:
           method: post
           cors: true
           integration: lambda
+          request:
+            templates:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.resourcePath",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.json('$')
+                }
 
   eliminarUsuario:
     handler: eliminar_usuario.lambda_handler
@@ -42,6 +64,17 @@ functions:
           method: delete
           cors: true
           integration: lambda
+          request:
+            templates:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.resourcePath",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.json('$')
+                }
 
   obtenerPerfil:
     handler: obtener_perfil.lambda_handler
@@ -51,6 +84,17 @@ functions:
           method: get
           cors: true
           integration: lambda
+          request:
+            templates:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.resourcePath",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.json('$')
+                }
 
 resources:
   Resources:
